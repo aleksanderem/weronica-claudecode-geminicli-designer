@@ -1,0 +1,11 @@
+feat: Dodanie zakładki "Wszystkie połączenia" w pluginie Figma
+
+- Nowa zakładka pokazująca listę wszystkich aktywnych kanałów
+- Wysyłanie nazwy dokumentu przy dołączaniu do kanału
+- Oznaczanie bieżącego połączenia na liście
+- Automatyczne i ręczne odświeżanie listy połączeń
+- Mock funkcjonalności dla serwerów bez wsparcia list_channels
+- Dokumentacja i przykład implementacji po stronie serwera
+
+Uwaga: Pełna funkcjonalność wymaga modyfikacji serwera MCP
+aby przechowywał informacje o kanałach. Zobacz docs/server-channels-example.js

@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>W.E.R.O.N.I.C.A</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        color: #e0e0e0;
+        background-color: #1e1e1e;
+        width: 560px; /* Szersze okno */
+        box-sizing: border-box;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      h1 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ffffff;
+      }
+      h2 {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        color: #ffffff;
+      }
+      button {
+        background-color: #18a0fb;
+        border: none;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+      button:hover {
+        background-color: #0d8ee0;
+      }
+      button.secondary {
+        background-color: #3d3d3d;
+        color: #e0e0e0;
+      }
+      button.secondary:hover {
+        background-color: #4d4d4d;
+      }
+      button:disabled {
+        background-color: #333333;
+        color: #666666;
+        cursor: not-allowed;
+      }
+      input {
+        border: 1px solid #444444;
+        border-radius: 4px;
+        padding: 8px;
+        margin-bottom: 12px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #2d2d2d;
+        color: #e0e0e0;
+      }
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #cccccc;
+      }
+      .status {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 14px;
+      }
+      .status.connected {
+        background-color: #1a472a;
+        color: #4ade80;
+      }
+      .status.disconnected {
+        background-color: #471a1a;
+        color: #ff9999;
+      }
+      .status.info {
+        background-color: #1a3147;
+        color: #66b3ff;
+      }
+      .section {
+        margin-bottom: 24px;
+      }
+      .hidden {
+        display: none;
+      }
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .header-text {
+        margin-left: 12px;
+      }
+      .header-text h1 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .header-text p {
+        margin: 4px 0 0 0;
+        font-size: 12px;
+        color: #999999;
+      }
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #444444;
+        margin-bottom: 16px;
+      }
+      .tab {
+        padding: 8px 16px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        color: #999999;
+      }
+      .tab.active {
+        border-bottom: 2px solid #18a0fb;
+        color: #18a0fb;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .link {
+        color: #18a0fb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .link:hover {
+        text-decoration: underline;
+      }
+      .header-logo {
+        padding: 16px;
+        border-radius: 16px;
+        background-color: #333;
+      }
+      .header-logo-image {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+      /* Progress styles */
+      .operation-complete {
+        color: #4ade80;
+      }
+      .operation-error {
+        color: #ff9999;
+      }
+      /* Connection list styles */
+      .connection-item {
+        background-color: #2d2d2d;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 8px;
+      }
+      .connection-item.current {
+        border-color: #18a0fb;
+        background-color: #1a3147;
+      }
+      .connection-channel {
+        font-family: monospace;
+        color: #18a0fb;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .connection-document {
+        color: #e0e0e0;
+        font-size: 13px;
+      }
+      .connection-status {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+      }
+      /* LLM Data section styles */
+      .llm-data-section {
+        background-color: #2d2d2d;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 12px;
+        margin-top: 16px;
+      }
+      .llm-data-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+      .llm-data-content {
+        font-family: monospace;
+        font-size: 12px;
+        background-color: #1e1e1e;
+        padding: 12px;
+        border-radius: 4px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .copy-button {
+        padding: 4px 12px;
+        font-size: 12px;
+        background-color: #3d3d3d;
+        color: #e0e0e0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .copy-button:hover {
+        background-color: #4d4d4d;
+      }
+      .copy-button.copied {
+        background-color: #1a472a;
+        color: #4ade80;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-logo" style="background:#FFF;aspect-ratio: 1;display:flex;align-items:center;justify-content: center;">
+          
+          <img
+            class="header-logo-image"
+            src="data:image/png;base64, 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"
+            style="width: 120px; height: auto;"
+            alt="W.E.R.O.N.I.C.A Logo"
+          />
+        </div>
+        <div class="header-text">
+          <h1>W.E.R.O.N.I.C.A</h1>
+          <p>Połącz projektowanie z Gemini CLI/Claude Code i zdaj się na gust programisty w kwestii kolorów</p>
+          <p style="font-size: 11px; margin-top: 4px; color: #999999;">Working Everyday Reliable & Open-minded, Never entitled, Intelligent Creative Assistant</p>
+          <p style="font-size: 10px; margin-top: 2px; color: #777777; font-style: italic;">Working hard, never whining, always designing. Design flow in tempo. No chaos. No fuss.</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div id="tab-connection" class="tab active">Połączenie</div>
+        <div id="tab-all-connections" class="tab">Wszystkie połączenia</div>
+        <div id="tab-about" class="tab">O narzędziu</div>
+      </div>
+
+      <div id="content-connection" class="tab-content active">
+        <div class="section">
+          <label for="port">Port serwera WebSocket</label>
+          <div style="display: flex; gap: 8px">
+            <input
+              type="number"
+              id="port"
+              placeholder="3055"
+              value="3055"
+              min="1024"
+              max="65535"
+            />
+            <button id="btn-connect" class="primary">Połącz</button>
+          </div>
+        </div>
+
+        <div id="connection-status" class="status disconnected">
+          Nie udało się połączyć z serwerm MCP<br>
+          <small>Dokument: <span id="doc-name-initial">Ładowanie...</span></small>
+        </div>
+
+        <div class="section">
+          <button id="btn-disconnect" class="secondary" disabled>
+            Rozłącz
+          </button>
+        </div>
+        
+        <!-- Add Progress Bar Section -->
+        <div id="progress-container" class="section hidden">
+          <h2>Operation Progress</h2>
+          <div id="progress-message">No operation in progress</div>
+          <div style="width: 100%; background-color: #444; border-radius: 4px; margin-top: 8px;">
+            <div id="progress-bar" style="width: 0%; height: 8px; background-color: #18a0fb; border-radius: 4px; transition: width 0.3s;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px;">
+            <div id="progress-status">Not started</div>
+            <div id="progress-percentage">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-all-connections" class="tab-content">
+        <div class="section">
+          <h2>Aktywne połączenia</h2>
+          <p style="font-size: 12px; color: #999;">Lista wszystkich aktywnych kanałów z dokumentami Figma</p>
+          
+          <button id="btn-refresh-connections" class="secondary" style="margin-bottom: 16px;">
+            Odśwież listę
+          </button>
+          
+          <div id="connections-list" style="margin-top: 16px;">
+            <div style="text-align: center; color: #666;">
+              Połącz się z serwerem aby zobaczyć aktywne połączenia
+            </div>
+          </div>
+          
+          <!-- LLM Data Section -->
+          <div class="llm-data-section">
+            <div class="llm-data-header">
+              <h3 style="margin: 0; font-size: 14px;">Dane dla LLM</h3>
+              <button id="btn-copy-llm-data" class="copy-button">Kopiuj</button>
+            </div>
+            <div id="llm-data-content" class="llm-data-content">
+              # Brak danych do skopiowania
+              
+              Połącz się z serwerem aby wygenerować dane dla LLM.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content-about" class="tab-content">
+        <div class="section">
+          <h2>O wtyczce Figma auto grafik</h2>
+          <p>
+            Plugin umozliwia komunikacje Gemini CLI / Claude Code z Figma poprzez WebSocket.
+            Rozwiązanie to umozliwia <strong>pracę bezpośrednio w projektach</strong> gdzie domyslny
+            Figma MCP działa tylko jako tryb do odczytu tylko dla developerów. 
+          </p>
+          <p>Wersja: 1.0.0</p>
+
+          <h2>Jak tego uzywac?</h2>
+          <ol>
+            <li>Upewnij sie, ze MCP jest zainstalowane i dziala</li>
+            <li>Polacz sie z serwerem poprzez odpowiedni port (domyslny: 3055)</li>
+            <li>Jak sie polaczysz, skopiuj ID kanału i wklej to do Gemini/CC</li>
+            <li>Wazne: 1 projekt == 1 kanał ID. Jak chcesz pracować z kilkoma projektami na raz, w kazdym musisz uruchomic plugin</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // WebSocket connection state
+      const state = {
+        connected: false,
+        socket: null,
+        serverPort: 3055,
+        pendingRequests: new Map(),
+        channel: null,
+        documentName: null,
+        allConnections: [],
+      };
+      
+
+
+      // UI Elements
+      const portInput = document.getElementById("port");
+      const connectButton = document.getElementById("btn-connect");
+      const disconnectButton = document.getElementById("btn-disconnect");
+      const connectionStatus = document.getElementById("connection-status");
+
+      // Tabs
+      const tabs = document.querySelectorAll(".tab");
+      const tabContents = document.querySelectorAll(".tab-content");
+
+      // Add UI elements for progress tracking
+      const progressContainer = document.getElementById("progress-container");
+      const progressBar = document.getElementById("progress-bar");
+      const progressMessage = document.getElementById("progress-message");
+      const progressStatus = document.getElementById("progress-status");
+      const progressPercentage = document.getElementById("progress-percentage");
+      const refreshButton = document.getElementById("btn-refresh-connections");
+      const connectionsList = document.getElementById("connections-list");
+      const copyLLMButton = document.getElementById("btn-copy-llm-data");
+      const llmDataContent = document.getElementById("llm-data-content");
+
+
+      // Initialize UI
+      function updateConnectionStatus(isConnected, message) {
+        state.connected = isConnected;
+        
+        // Get current document name to preserve it
+        const currentDocName = document.getElementById('doc-name-initial')?.textContent || 'Ładowanie...';
+        
+        if (!message) {
+          message = isConnected
+            ? "Connected to Cursor MCP server"
+            : `Nie udało się połączyć z serwerm MCP<br><small>Dokument: <span id="doc-name-initial">${currentDocName}</span></small>`;
+        }
+        
+        connectionStatus.innerHTML = message;
+        connectionStatus.className = `status ${
+          isConnected ? "connected" : "disconnected"
+        }`;
+
+        connectButton.disabled = isConnected;
+        disconnectButton.disabled = !isConnected;
+        portInput.disabled = isConnected;
+      }
+
+      // Connect to WebSocket server
+      async function connectToServer(port) {
+        try {
+          if (state.connected && state.socket) {
+            updateConnectionStatus(true, "Already connected to server");
+            return;
+          }
+
+          state.serverPort = port;
+          state.socket = new WebSocket(`ws://localhost:${port}`);
+
+          state.socket.onopen = () => {
+            // Generate random channel name
+            const channelName = generateChannelName();
+            console.log("Joining channel:", channelName);
+            state.channel = channelName;
+
+            // Get document name before joining
+            const docName = state.documentName || document.getElementById('doc-name-initial')?.textContent || 'Unknown';
+            
+            // Join the channel with document name
+            state.socket.send(
+              JSON.stringify({
+                type: "join",
+                channel: channelName.trim(),
+                metadata: {
+                  documentName: docName,
+                  pluginVersion: "1.0.0"
+                }
+              })
+            );
+          };
+
+          state.socket.onmessage = (event) => {
+            try {
+              const data = JSON.parse(event.data);
+              console.log("Received message:", data);
+
+              if (data.type === "system") {
+                // Successfully joined channel
+                if (data.message && data.message.result) {
+                  state.connected = true;
+                  const channelName = data.channel;
+                 
+                  updateConnectionStatus(
+                    true,
+                    `Połączono z serwerem przez port ${port} ID kanału: <strong>${channelName}</strong> Nazwa dokumentu: <strong id="doc-name">Ładowanie...</strong>`
+                  );
+
+                  // Notify the plugin code
+                  parent.postMessage(
+                    {
+                      pluginMessage: {
+                        type: "notify",
+                        message: `Połączono z serwerm MCP uzywajac portu ${port} ID kanału: ${channelName}`,
+                      },
+                    },
+                    "*"
+                  );
+                  
+                  // Request document name from plugin
+                  parent.postMessage(
+                    {
+                      pluginMessage: {
+                        type: "GET_DOCUMENT_NAME"
+                      },
+                    },
+                    "*"
+                  );
+                  
+                  // Request list of all connections after successful join
+                  setTimeout(() => {
+                    requestConnectionsList();
+                    
+                    // For now, show at least current connection if server doesn't support list_channels
+                    if (state.allConnections.length === 0) {
+                      const mockConnection = {
+                        channel: state.channel,
+                        documentName: state.documentName || document.getElementById('doc-name-initial')?.textContent || 'Unknown',
+                        connectedAt: new Date().toISOString()
+                      };
+                      updateConnectionsList([mockConnection]);
+                    }
+                  }, 500);
+                  
+
+                }
+              } else if (data.type === "error") {
+                console.error("Error:", data.message);
+                const currentDocName = document.getElementById('doc-name-initial')?.textContent || 'Ładowanie...';
+                updateConnectionStatus(false, `Error: ${data.message}<br><small>Dokument: <span id="doc-name-initial">${currentDocName}</span></small>`);
+                state.socket.close();
+              } else if (data.type === "channels_list") {
+                // Update the connections list
+                updateConnectionsList(data.channels);
+              }
+
+              handleSocketMessage(data);
+              
+              /* 
+               * NOTE: For full multi-channel support, your MCP server needs to:
+               * 1. Store channel metadata when clients join:
+               *    channels.set(channelName, { documentName, connectedAt, ... })
+               * 
+               * 2. Handle 'list_channels' message type:
+               *    if (data.type === 'list_channels') {
+               *      const channelsList = Array.from(channels.entries()).map(([channel, metadata]) => ({
+               *        channel,
+               *        ...metadata
+               *      }));
+               *      ws.send(JSON.stringify({ type: 'channels_list', channels: channelsList }));
+               *    }
+               * 
+               * 3. Clean up channels on disconnect
+               */
+            } catch (error) {
+              console.error("Error parsing message:", error);
+            }
+          };
+
+          state.socket.onclose = () => {
+            state.connected = false;
+            state.socket = null;
+            state.channel = null;
+            updateConnectionStatus(false, "Disconnected from server");
+            updateConnectionsList([]); // Clear connections list on disconnect
+          };
+
+          state.socket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+            updateConnectionStatus(false, "Connection error");
+            state.connected = false;
+            state.socket = null;
+          };
+        } catch (error) {
+          console.error("Connection error:", error);
+          const currentDocName = document.getElementById('doc-name-initial')?.textContent || 'Ładowanie...';
+          updateConnectionStatus(
+            false,
+            `Connection error: ${error.message || "Unknown error"}<br><small>Dokument: <span id="doc-name-initial">${currentDocName}</span></small>`
+          );
+        }
+      }
+
+      // Disconnect from websocket server
+      function disconnectFromServer() {
+        if (state.socket) {
+          state.socket.close();
+          state.socket = null;
+          state.connected = false;
+          updateConnectionStatus(false, "Disconnected from server");
+        }
+      }
+
+      // Handle messages from the WebSocket
+      async function handleSocketMessage(payload) {
+        const data = payload.message;
+        console.log("handleSocketMessage", data);
+
+        // If it's a response to a previous request
+        if (data.id && state.pendingRequests.has(data.id)) {
+          const { resolve, reject } = state.pendingRequests.get(data.id);
+          state.pendingRequests.delete(data.id);
+
+          if (data.error) {
+            reject(new Error(data.error));
+          } else {
+            resolve(data.result);
+          }
+          return;
+        }
+
+        // If it's a new command
+        if (data.command) {
+          try {
+            // Send the command to the plugin code
+            parent.postMessage(
+              {
+                pluginMessage: {
+                  type: "execute-command",
+                  id: data.id,
+                  command: data.command,
+                  params: data.params,
+                },
+              },
+              "*"
+            );
+          } catch (error) {
+            // Send error back to WebSocket
+            sendErrorResponse(
+              data.id,
+              error.message || "Error executing command"
+            );
+          }
+        }
+      }
+
+      // Send a command to the WebSocket server
+      async function sendCommand(command, params) {
+        return new Promise((resolve, reject) => {
+          if (!state.connected || !state.socket) {
+            reject(new Error("Not connected to server"));
+            return;
+          }
+
+          const id = generateId();
+          state.pendingRequests.set(id, { resolve, reject });
+
+          state.socket.send(
+            JSON.stringify({
+              id,
+              type: "message",
+              channel: state.channel,
+              message: {
+                id,
+                command,
+                params,
+              },
+            })
+          );
+
+          // Set timeout to reject the promise after 30 seconds
+          setTimeout(() => {
+            if (state.pendingRequests.has(id)) {
+              state.pendingRequests.delete(id);
+              reject(new Error("Request timed out"));
+            }
+          }, 30000);
+        });
+      }
+
+      // Send success response back to WebSocket
+      function sendSuccessResponse(id, result) {
+        if (!state.connected || !state.socket) {
+          console.error("Cannot send response: socket not connected");
+          return;
+        }
+
+        state.socket.send(
+          JSON.stringify({
+            id,
+            type: "message",
+            channel: state.channel,
+            message: {
+              id,
+              result,
+            },
+          })
+        );
+      }
+      
+      // Function to request list of all connections
+      function requestConnectionsList() {
+        if (!state.connected || !state.socket) {
+          updateConnectionsList([]);
+          return;
+        }
+        
+        // Send request for all channels
+        state.socket.send(
+          JSON.stringify({
+            type: "list_channels",
+            channel: state.channel
+          })
+        );
+      }
+      
+      // Function to update connections list UI
+      function updateConnectionsList(connections) {
+        state.allConnections = connections || [];
+        
+        if (!state.connected) {
+          connectionsList.innerHTML = `
+            <div style="text-align: center; color: #666;">
+              Połącz się z serwerem aby zobaczyć aktywne połączenia
+            </div>`;
+          updateLLMData(); // Update LLM data
+          return;
+        }
+        
+        if (state.allConnections.length === 0) {
+          connectionsList.innerHTML = `
+            <div style="text-align: center; color: #666;">
+              Brak aktywnych połączeń
+            </div>`;
+          updateLLMData(); // Update LLM data
+          return;
+        }
+        
+        // Build connections list HTML
+        let html = '';
+        state.allConnections.forEach(conn => {
+          const isCurrent = conn.channel === state.channel;
+          html += `
+            <div class="connection-item ${isCurrent ? 'current' : ''}">
+              <div class="connection-channel">Kanał: ${conn.channel}</div>
+              <div class="connection-document">Dokument: ${conn.documentName || 'Nieznany'}</div>
+              <div class="connection-status">
+                ${isCurrent ? 'To połączenie' : 'Aktywne'}
+                ${conn.connectedAt ? ' • Połączono: ' + new Date(conn.connectedAt).toLocaleTimeString('pl-PL') : ''}
+              </div>
+            </div>`;
+        });
+        
+        connectionsList.innerHTML = html;
+        updateLLMData(); // Update LLM data
+      }
+      
+      // Function to generate LLM-formatted data
+      function generateLLMData() {
+        if (!state.connected || state.allConnections.length === 0) {
+          return `# Figma MCP Connections
+
+Status: ${state.connected ? 'Connected' : 'Not connected'}
+No active connections available.`;
+        }
+        
+        let data = `# Figma MCP Connections
+
+Status: Connected to MCP server on port ${state.serverPort}
+Current channel: ${state.channel}
+Total active connections: ${state.allConnections.length}
+
+## Active Connections:
+
+`;
+        
+        state.allConnections.forEach((conn, index) => {
+          const isCurrent = conn.channel === state.channel;
+          data += `### Connection ${index + 1}${isCurrent ? ' (CURRENT)' : ''}
+`;
+          data += `- Channel ID: ${conn.channel}
+`;
+          data += `- Document: ${conn.documentName || 'Unknown'}
+`;
+          data += `- Status: ${isCurrent ? 'This is your current connection' : 'Active'}
+`;
+          if (conn.connectedAt) {
+            data += `- Connected at: ${new Date(conn.connectedAt).toLocaleString('pl-PL')}
+`;
+          }
+          data += `\n`;
+        });
+        
+        // Add instructions for LLM
+        data += `## Instructions for LLM:
+
+`;
+        data += `To work with Figma through MCP, use the following channel ID in your commands:
+`;
+        data += `\`\`\`
+join_channel channel:"${state.channel}"
+\`\`\`
+
+`;
+        data += `This will connect you to the document: ${state.documentName || 'Unknown'}
+`;
+        
+        return data;
+      }
+      
+      // Function to update LLM data display
+      function updateLLMData() {
+        const llmData = generateLLMData();
+        llmDataContent.textContent = llmData;
+      }
+
+      // Send error response back to WebSocket
+      function sendErrorResponse(id, errorMessage) {
+        if (!state.connected || !state.socket) {
+          console.error("Cannot send error response: socket not connected");
+          return;
+        }
+
+        state.socket.send(
+          JSON.stringify({
+            id,
+            type: "message",
+            channel: state.channel,
+            message: {
+              id,
+              error: errorMessage,
+              result: {}
+            },
+          })
+        );
+      }
+
+      // Helper to generate unique IDs
+      function generateId() {
+        return (
+          Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
+        );
+      }
+
+      // Add this function after the generateId() function
+      function generateChannelName() {
+        const characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        let result = "";
+        for (let i = 0; i < 8; i++) {
+          result += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+          );
+        }
+        return result;
+      }
+
+
+
+      // Tab switching
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+
+          const tabId = tab.id;
+          const contentId = tabId.replace("tab-", "content-");
+
+          tabContents.forEach((content) => {
+            content.classList.remove("active");
+          });
+
+          document.getElementById(contentId).classList.add("active");
+        });
+      });
+
+      // Connect to server
+      connectButton.addEventListener("click", () => {
+        const port = parseInt(portInput.value, 10) || 3055;
+        updateConnectionStatus(false, "Connecting...");
+        connectionStatus.className = "status info";
+        connectToServer(port);
+      });
+
+      // Disconnect from server
+      disconnectButton.addEventListener("click", () => {
+        updateConnectionStatus(false, "Disconnecting...");
+        connectionStatus.className = "status info";
+        disconnectFromServer();
+      });
+      
+      // Refresh connections list
+      refreshButton.addEventListener("click", () => {
+        requestConnectionsList();
+        
+        // If server doesn't support list_channels, show current connection
+        setTimeout(() => {
+          if (state.connected && state.allConnections.length === 0) {
+            const mockConnection = {
+              channel: state.channel,
+              documentName: state.documentName || document.getElementById('doc-name-initial')?.textContent || 'Unknown',
+              connectedAt: new Date().toISOString()
+            };
+            updateConnectionsList([mockConnection]);
+          }
+        }, 1000);
+      });
+      
+      // Copy LLM data to clipboard
+      copyLLMButton.addEventListener("click", async () => {
+        const data = generateLLMData();
+        
+        try {
+          await navigator.clipboard.writeText(data);
+          
+          // Change button text temporarily
+          copyLLMButton.textContent = "Skopiowano!";
+          copyLLMButton.classList.add("copied");
+          
+          setTimeout(() => {
+            copyLLMButton.textContent = "Kopiuj";
+            copyLLMButton.classList.remove("copied");
+          }, 2000);
+        } catch (err) {
+          console.error("Failed to copy text: ", err);
+          copyLLMButton.textContent = "Błąd!";
+          setTimeout(() => {
+            copyLLMButton.textContent = "Kopiuj";
+          }, 2000);
+        }
+      });
+
+      // Function to update progress UI
+      function updateProgressUI(progressData) {
+        // Show progress container if hidden
+        progressContainer.classList.remove("hidden");
+        
+        // Update progress bar
+        const progress = progressData.progress || 0;
+        progressBar.style.width = `${progress}%`;
+        progressPercentage.textContent = `${progress}%`;
+        
+        // Update message
+        progressMessage.textContent = progressData.message || "Operation in progress";
+        
+        // Update status text based on operation state
+        if (progressData.status === 'started') {
+          progressStatus.textContent = "Started";
+          progressStatus.className = "";
+        } else if (progressData.status === 'in_progress') {
+          progressStatus.textContent = "In Progress";
+          progressStatus.className = "";
+        } else if (progressData.status === 'completed') {
+          progressStatus.textContent = "Completed";
+          progressStatus.className = "operation-complete";
+          
+          // Hide progress container after 5 seconds
+          setTimeout(() => {
+            progressContainer.classList.add("hidden");
+          }, 5000);
+        } else if (progressData.status === 'error') {
+          progressStatus.textContent = "Error";
+          progressStatus.className = "operation-error";
+        }
+      }
+
+      // Send operation progress update to server
+      function sendProgressUpdateToServer(progressData) {
+        if (!state.connected || !state.socket) {
+          console.error("Cannot send progress update: socket not connected");
+          return;
+        }
+        
+        console.log("Sending progress update to server:", progressData);
+        
+        state.socket.send(
+          JSON.stringify({
+            id: progressData.commandId,
+            type: "progress_update",
+            channel: state.channel,
+            message: {
+              id: progressData.commandId,
+              type: "progress_update",
+              data: progressData
+            }
+          })
+        );
+      }
+      
+      // Reset progress UI
+      function resetProgressUI() {
+        progressContainer.classList.add("hidden");
+        progressBar.style.width = "0%";
+        progressMessage.textContent = "No operation in progress";
+        progressStatus.textContent = "Not started";
+        progressStatus.className = "";
+        progressPercentage.textContent = "0%";
+      }
+
+      // Listen for messages from the plugin code
+      window.onmessage = (event) => {
+        const message = event.data.pluginMessage;
+        if (!message) return;
+
+        console.log("Received message from plugin:", message);
+        
+
+
+        switch (message.type) {
+          case "init":
+            // Update document name when received from plugin
+            const nazwa = message.documentName;
+            state.documentName = nazwa; // Save to state
+            const docNameElement = document.getElementById('doc-name');
+            if (docNameElement) {
+              docNameElement.textContent = nazwa;
+            }
+            // Also update initial document name display
+            const docNameInitial = document.getElementById('doc-name-initial');
+            if (docNameInitial) {
+              docNameInitial.textContent = nazwa;
+            }
+            break;
+          case "connection-status":
+            updateConnectionStatus(message.connected, message.message);
+            break;
+          case "auto-connect":
+            connectButton.click();
+            break;
+          case "auto-disconnect":
+            disconnectButton.click();
+            break;
+          case "command-result":
+            // Forward the result from plugin code back to WebSocket
+            sendSuccessResponse(message.id, message.result);
+            break;
+          case "command-error":
+            // Forward the error from plugin code back to WebSocket
+            sendErrorResponse(message.id, message.error);
+            break;
+          case "command_progress":
+            // Update UI with progress information
+            updateProgressUI(message);
+            // Forward progress update to server
+            sendProgressUpdateToServer(message);
+            break;
+        }
+      };
+    </script>
+  </body>
+</html>
