@@ -245,8 +245,8 @@
       <!-- Language switch -->
       <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
         <button id="lang-switch" style="padding: 5px 10px; font-size: 12px; background-color: #3d3d3d; color: #e0e0e0; border: none; border-radius: 4px; cursor: pointer;">
-          <span class="lang-pl">EN</span>
-          <span class="lang-en" style="display: none;">PL</span>
+          <span class="lang-pl">PL</span>
+          <span class="lang-en" style="display: none;">EN</span>
         </button>
       </div>
       <div class="header">
@@ -261,9 +261,9 @@
         </div>
         <div class="header-text">
           <h1>W.E.R.O.N.I.C.A</h1>
-          <p>Połącz projektowanie z Gemini CLI/Claude Code i zdaj się na gust programisty w kwestii kolorów</p>
-          <p style="font-size: 11px; margin-top: 4px; color: #999999;">Working Everyday Reliable & Open-minded, Never entitled, Intelligent Creative Assistant</p>
-          <p style="font-size: 10px; margin-top: 2px; color: #777777; font-style: italic;">Working hard, never whining, always designing. Design flow in tempo. No chaos. No fuss.</p>
+          <p data-translate="about-description">Połącz projektowanie z Gemini CLI/Claude Code i zdaj się na gust programisty w kwestii kolorów</p>
+          <p style="font-size: 11px; margin-top: 4px; color: #999999;" data-translate="working-everyday">Working Everyday Reliable & Open-minded, Never entitled, Intelligent Creative Assistant</p>
+          <p style="font-size: 10px; margin-top: 2px; color: #777777; font-style: italic;" data-translate="slogan">Working hard, never whining, always designing. Design flow in tempo. No chaos. No fuss.</p>
         </div>
       </div>
 
@@ -316,15 +316,15 @@
 
       <div id="content-all-connections" class="tab-content">
         <div class="section">
-          <h2>Aktywne połączenia</h2>
-          <p style="font-size: 12px; color: #999;">Lista wszystkich aktywnych kanałów z dokumentami Figma</p>
+          <h2 data-translate="sessions-tab">Aktywne połączenia</h2>
+          <p style="font-size: 12px; color: #999;" data-translate="sessions-description">Lista wszystkich aktywnych kanałów z dokumentami Figma</p>
           
           <button id="btn-refresh-connections" class="secondary" style="margin-bottom: 16px;" data-translate="refresh">
             Odśwież listę
           </button>
           
           <div id="connections-list" style="margin-top: 16px;">
-            <div style="text-align: center; color: #666;">
+            <div style="text-align: center; color: #666;" data-translate="connect-first">
               Połącz się z serwerem aby zobaczyć aktywne połączenia
             </div>
           </div>
@@ -332,13 +332,13 @@
           <!-- LLM Data Section -->
           <div class="llm-data-section">
             <div class="llm-data-header">
-              <h3 style="margin: 0; font-size: 14px;">Dane dla LLM</h3>
+              <h3 style="margin: 0; font-size: 14px;" data-translate="llm-tab">Dane dla LLM</h3>
               <button id="btn-copy-llm-data" class="copy-button" data-translate="copy-llm">Kopiuj</button>
             </div>
             <div id="llm-data-content" class="llm-data-content">
-              # Brak danych do skopiowania
+              <span data-translate="no-data"># Brak danych do skopiowania</span>
               
-              Połącz się z serwerem aby wygenerować dane dla LLM.
+              <span data-translate="connect-for-llm">Połącz się z serwerem aby wygenerować dane dla LLM.</span>
             </div>
           </div>
         </div>
@@ -346,20 +346,20 @@
 
       <div id="content-about" class="tab-content">
         <div class="section">
-          <h2>O wtyczce Figma auto grafik</h2>
-          <p>
+          <h2 data-translate="about-header">O wtyczce Figma auto grafik</h2>
+          <p data-translate="about-text">
             Plugin umozliwia komunikacje Gemini CLI / Claude Code z Figma poprzez WebSocket.
             Rozwiązanie to umozliwia <strong>pracę bezpośrednio w projektach</strong> gdzie domyslny
             Figma MCP działa tylko jako tryb do odczytu tylko dla developerów. 
           </p>
-          <p>Wersja: 1.0.0</p>
+          <p data-translate="version-text">Wersja: 1.0.0</p>
 
           <h2 data-translate="how-to-use">Jak tego uzywac?</h2>
           <ol>
-            <li>Upewnij sie, ze MCP jest zainstalowane i dziala</li>
-            <li>Polacz sie z serwerem poprzez odpowiedni port (domyslny: 3055)</li>
-            <li>Jak sie polaczysz, skopiuj ID kanału i wklej to do Gemini/CC</li>
-            <li>Wazne: 1 projekt == 1 kanał ID. Jak chcesz pracować z kilkoma projektami na raz, w kazdym musisz uruchomic plugin</li>
+            <li data-translate="step1">Upewnij sie, ze MCP jest zainstalowane i dziala</li>
+            <li data-translate="step2">Polacz sie z serwerem poprzez odpowiedni port (domyslny: 3055)</li>
+            <li data-translate="step3">Jak sie polaczysz, skopiuj ID kanału i wklej to do Gemini/CC</li>
+            <li data-translate="step4">Wazne: 1 projekt == 1 kanał ID. Jak chcesz pracować z kilkoma projektami na raz, w kazdym musisz uruchomic plugin</li>
           </ol>
         </div>
       </div>
@@ -449,7 +449,43 @@
           'connecting': 'Łączenie...',
           'copied': 'Skopiowano!',
           'current-session': 'Twoja aktualna sesja',
-          'connected-at': 'Połączono o:'
+          'connected-at': 'Połączono o:',
+          
+          // About section
+          'about-header': 'O wtyczce Figma auto grafik',
+          'about-description': 'Połącz projektowanie z Gemini CLI/Claude Code i zdaj się na gust programisty w kwestii kolorów',
+          'about-text': 'Plugin umozliwia komunikacje Gemini CLI / Claude Code z Figma poprzez WebSocket. Rozwiązanie to umozliwia <strong>pracę bezpośrednio w projektach</strong> gdzie domyslny Figma MCP działa tylko jako tryb do odczytu tylko dla developerów.',
+          'version-text': 'Wersja: 1.0.0',
+          
+          // Other
+          'no-data': '# Brak danych do skopiowania',
+          'connect-first': 'Połącz się z serwerem aby zobaczyć aktywne połączenia',
+          'connect-for-llm': 'Połącz się z serwerem aby wygenerować dane dla LLM.',
+          'sessions-description': 'Lista wszystkich aktywnych kanałów z dokumentami Figma',
+          'channel': 'Kanał:',
+          'unknown': 'Nieznany',
+          'this-connection': 'To połączenie',
+          'active': 'Aktywne',
+          'connected-time': 'Połączono:',
+          
+          // LLM Data
+          'llm-status': 'Status:',
+          'llm-connected': 'Połączony',
+          'llm-not-connected': 'Niepołączony',
+          'llm-no-connections': 'Brak aktywnych połączeń.',
+          'llm-server-port': 'Połączony z serwerem MCP na porcie',
+          'llm-current-channel': 'Aktualny kanał:',
+          'llm-total-connections': 'Wszystkie aktywne połączenia:',
+          'llm-active-connections': 'Aktywne Połączenia:',
+          'llm-connection': 'Połączenie',
+          'llm-current': '(AKTUALNY)',
+          'llm-channel-id': 'ID kanału:',
+          'llm-document': 'Dokument:',
+          'llm-connected-at': 'Połączono:',
+          'llm-channel-to-use': 'Kanał do użycia w MCP:',
+          'llm-instructions': 'Instrukcje dla LLM:',
+          'llm-work-with': 'Aby pracować z Figmą przez MCP, użyj następującego ID kanału w swoich komendach:',
+          'llm-connect-to': 'To połączy Cię z dokumentem:'
         },
         en: {
           // Header
@@ -494,7 +530,43 @@
           'connecting': 'Connecting...',
           'copied': 'Copied!',
           'current-session': 'Your current session',
-          'connected-at': 'Connected at:'
+          'connected-at': 'Connected at:',
+          
+          // About section
+          'about-header': 'About Figma auto designer',
+          'about-description': 'Connect design with Gemini CLI/Claude Code and trust the developer\'s taste in colors',
+          'about-text': 'The plugin enables communication between Gemini CLI / Claude Code and Figma via WebSocket. This solution allows <strong>working directly in projects</strong> where the default Figma MCP only works in read-only mode for developers.',
+          'version-text': 'Version: 1.0.0',
+          
+          // Other
+          'no-data': '# No data to copy',
+          'connect-first': 'Connect to server to see active connections',
+          'connect-for-llm': 'Connect to server to generate data for LLM.',
+          'sessions-description': 'List of all active channels with Figma documents',
+          'channel': 'Channel:',
+          'unknown': 'Unknown',
+          'this-connection': 'This connection',
+          'active': 'Active',
+          'connected-time': 'Connected:',
+          
+          // LLM Data
+          'llm-status': 'Status:',
+          'llm-connected': 'Connected',
+          'llm-not-connected': 'Not connected',
+          'llm-no-connections': 'No active connections available.',
+          'llm-server-port': 'Connected to MCP server on port',
+          'llm-current-channel': 'Current channel:',
+          'llm-total-connections': 'Total active connections:',
+          'llm-active-connections': 'Active Connections:',
+          'llm-connection': 'Connection',
+          'llm-current': '(CURRENT)',
+          'llm-channel-id': 'Channel ID:',
+          'llm-document': 'Document:',
+          'llm-connected-at': 'Connected at:',
+          'llm-channel-to-use': 'Channel to use in MCP:',
+          'llm-instructions': 'Instructions for LLM:',
+          'llm-work-with': 'To work with Figma through MCP, use the following channel ID in your commands:',
+          'llm-connect-to': 'This will connect you to the document:'
         }
       };
 
@@ -502,12 +574,12 @@
       function switchLanguage(lang) {
         currentLang = lang;
         
-        // Update button text
+        // Update button text - show opposite language to switch to
         document.querySelectorAll('.lang-pl').forEach(el => {
-          el.style.display = lang === 'pl' ? 'inline' : 'none';
+          el.style.display = lang === 'en' ? 'inline' : 'none';
         });
         document.querySelectorAll('.lang-en').forEach(el => {
-          el.style.display = lang === 'en' ? 'inline' : 'none';
+          el.style.display = lang === 'pl' ? 'inline' : 'none';
         });
         
         // Update translatable elements
@@ -825,7 +897,7 @@
         if (!state.connected) {
           connectionsList.innerHTML = `
             <div style="text-align: center; color: #666;">
-              Połącz się z serwerem aby zobaczyć aktywne połączenia
+              ${translations[currentLang]['connect-first']}
             </div>`;
           updateLLMData(); // Update LLM data
           return;
@@ -834,7 +906,7 @@
         if (state.allConnections.length === 0) {
           connectionsList.innerHTML = `
             <div style="text-align: center; color: #666;">
-              Brak aktywnych połączeń
+              ${translations[currentLang]['no-connections']}
             </div>`;
           updateLLMData(); // Update LLM data
           return;
@@ -846,11 +918,11 @@
           const isCurrent = conn.channel === state.channel;
           html += `
             <div class="connection-item ${isCurrent ? 'current' : ''}">
-              <div class="connection-channel">Kanał: ${conn.channel}</div>
-              <div class="connection-document">Dokument: ${conn.documentName || 'Nieznany'}</div>
+              <div class="connection-channel">${translations[currentLang]['channel']} ${conn.channel}</div>
+              <div class="connection-document">${translations[currentLang]['document']} ${conn.documentName || translations[currentLang]['unknown']}</div>
               <div class="connection-status">
-                ${isCurrent ? 'To połączenie' : 'Aktywne'}
-                ${conn.connectedAt ? ' • Połączono: ' + new Date(conn.connectedAt).toLocaleTimeString('pl-PL') : ''}
+                ${isCurrent ? translations[currentLang]['this-connection'] : translations[currentLang]['active']}
+                ${conn.connectedAt ? ' • ' + translations[currentLang]['connected-time'] + ' ' + new Date(conn.connectedAt).toLocaleTimeString(currentLang === 'pl' ? 'pl-PL' : 'en-US') : ''}
               </div>
             </div>`;
         });
@@ -864,49 +936,49 @@
         if (!state.connected || state.allConnections.length === 0) {
           return `# Figma MCP Connections
 
-Status: ${state.connected ? 'Connected' : 'Not connected'}
-No active connections available.`;
+${translations[currentLang]['llm-status']} ${state.connected ? translations[currentLang]['llm-connected'] : translations[currentLang]['llm-not-connected']}
+${translations[currentLang]['llm-no-connections']}`;
         }
         
         let data = `# Figma MCP Connections
 
-Status: Connected to MCP server on port ${state.serverPort}
-Current channel: ${state.channel}
-Total active connections: ${state.allConnections.length}
+${translations[currentLang]['llm-status']} ${translations[currentLang]['llm-server-port']} ${state.serverPort}
+${translations[currentLang]['llm-current-channel']} ${state.channel}
+${translations[currentLang]['llm-total-connections']} ${state.allConnections.length}
 
-## Active Connections:
+## ${translations[currentLang]['llm-active-connections']}
 
 `;
         
         state.allConnections.forEach((conn, index) => {
           const isCurrent = conn.channel === state.channel;
-          data += `### Connection ${index + 1}${isCurrent ? ' (CURRENT)' : ''}
+          data += `### ${translations[currentLang]['llm-connection']} ${index + 1}${isCurrent ? ' ' + translations[currentLang]['llm-current'] : ''}
 `;
-          data += `- Channel ID: ${conn.channel}
+          data += `- ${translations[currentLang]['llm-channel-id']} ${conn.channel}
 `;
-          data += `- Document: ${conn.documentName || 'Unknown'}
+          data += `- ${translations[currentLang]['llm-document']} ${conn.documentName || translations[currentLang]['unknown']}
 `;
-          data += `- Status: ${isCurrent ? 'This is your current connection' : 'Active'}
+          data += `- ${translations[currentLang]['llm-status']} ${isCurrent ? translations[currentLang]['current-session'] : translations[currentLang]['active']}
 `;
           if (conn.connectedAt) {
-            data += `- Connected at: ${new Date(conn.connectedAt).toLocaleString('pl-PL')}
+            data += `- ${translations[currentLang]['llm-connected-at']} ${new Date(conn.connectedAt).toLocaleString(currentLang === 'pl' ? 'pl-PL' : 'en-US')}
 `;
           }
           data += `\n`;
         });
         
         // Add instructions for LLM
-        data += `## Instructions for LLM:
+        data += `## ${translations[currentLang]['llm-instructions']}
 
 `;
-        data += `To work with Figma through MCP, use the following channel ID in your commands:
+        data += `${translations[currentLang]['llm-work-with']}
 `;
         data += `\`\`\`
 join_channel channel:"${state.channel}"
 \`\`\`
 
 `;
-        data += `This will connect you to the document: ${state.documentName || 'Unknown'}
+        data += `${translations[currentLang]['llm-connect-to']} ${state.documentName || translations[currentLang]['unknown']}
 `;
         
         return data;
