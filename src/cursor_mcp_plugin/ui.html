@@ -242,6 +242,13 @@
   </head>
   <body>
     <div class="container">
+      <!-- Language switch -->
+      <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+        <button id="lang-switch" style="padding: 5px 10px; font-size: 12px; background-color: #3d3d3d; color: #e0e0e0; border: none; border-radius: 4px; cursor: pointer;">
+          <span class="lang-pl">EN</span>
+          <span class="lang-en" style="display: none;">PL</span>
+        </button>
+      </div>
       <div class="header">
         <div class="header-logo" style="background:#FFF;aspect-ratio: 1;display:flex;align-items:center;justify-content: center;">
           
@@ -261,14 +268,14 @@
       </div>
 
       <div class="tabs">
-        <div id="tab-connection" class="tab active">Połączenie</div>
-        <div id="tab-all-connections" class="tab">Wszystkie połączenia</div>
-        <div id="tab-about" class="tab">O narzędziu</div>
+        <div id="tab-connection" class="tab active" data-translate="connection-tab">Połączenie</div>
+        <div id="tab-all-connections" class="tab" data-translate="sessions-tab">Wszystkie połączenia</div>
+        <div id="tab-about" class="tab" data-translate="llm-tab">O narzędziu</div>
       </div>
 
       <div id="content-connection" class="tab-content active">
         <div class="section">
-          <label for="port">Port serwera WebSocket</label>
+          <label for="port" data-translate="port-label">Port serwera WebSocket</label>
           <div style="display: flex; gap: 8px">
             <input
               type="number"
@@ -278,7 +285,7 @@
               min="1024"
               max="65535"
             />
-            <button id="btn-connect" class="primary">Połącz</button>
+            <button id="btn-connect" class="primary" data-translate="connect">Połącz</button>
           </div>
         </div>
 
@@ -288,7 +295,7 @@
         </div>
 
         <div class="section">
-          <button id="btn-disconnect" class="secondary" disabled>
+          <button id="btn-disconnect" class="secondary" disabled data-translate="disconnect">
             Rozłącz
           </button>
         </div>
@@ -312,7 +319,7 @@
           <h2>Aktywne połączenia</h2>
           <p style="font-size: 12px; color: #999;">Lista wszystkich aktywnych kanałów z dokumentami Figma</p>
           
-          <button id="btn-refresh-connections" class="secondary" style="margin-bottom: 16px;">
+          <button id="btn-refresh-connections" class="secondary" style="margin-bottom: 16px;" data-translate="refresh">
             Odśwież listę
           </button>
           
@@ -326,7 +333,7 @@
           <div class="llm-data-section">
             <div class="llm-data-header">
               <h3 style="margin: 0; font-size: 14px;">Dane dla LLM</h3>
-              <button id="btn-copy-llm-data" class="copy-button">Kopiuj</button>
+              <button id="btn-copy-llm-data" class="copy-button" data-translate="copy-llm">Kopiuj</button>
             </div>
             <div id="llm-data-content" class="llm-data-content">
               # Brak danych do skopiowania
@@ -347,7 +354,7 @@
           </p>
           <p>Wersja: 1.0.0</p>
 
-          <h2>Jak tego uzywac?</h2>
+          <h2 data-translate="how-to-use">Jak tego uzywac?</h2>
           <ol>
             <li>Upewnij sie, ze MCP jest zainstalowane i dziala</li>
             <li>Polacz sie z serwerem poprzez odpowiedni port (domyslny: 3055)</li>
@@ -393,6 +400,133 @@
       const copyLLMButton = document.getElementById("btn-copy-llm-data");
       const llmDataContent = document.getElementById("llm-data-content");
 
+      // Language switch
+      const langSwitch = document.getElementById("lang-switch");
+      let currentLang = 'pl';
+
+      // Translations
+      const translations = {
+        pl: {
+          // Header
+          'working-everyday': 'Working Everyday Reliable & Open-minded, Never entitled, Intelligent Creative Assistant',
+          'slogan': 'Working hard, never whining, always designing. Design flow in tempo. No chaos. No fuss.',
+          
+          // Connection tab
+          'connection-tab': 'Połączenie',
+          'plugin-info': 'Plugin umozliwia komunikacje Gemini CLI / Claude Code z Figma poprzez WebSocket. Rozwiązanie to umozliwia <strong>pracę bezpośrednio w projektach</strong> gdzie domyslny Figma MCP działa tylko jako tryb do odczytu tylko dla developerów.',
+          'version': 'Wersja: 1.0.0',
+          'how-to-use': 'Jak tego uzywac?',
+          'step1': 'Upewnij sie, ze MCP jest zainstalowane i dziala',
+          'step2': 'Polacz sie z serwerem poprzez odpowiedni port (domyslny: 3055)',
+          'step3': 'Jak sie polaczysz, skopiuj ID kanału i wklej to do Gemini/CC',
+          'step4': 'Wazne: 1 projekt == 1 kanał ID. Jak chcesz pracować z kilkoma projektami na raz, w kazdym musisz uruchomic plugin',
+          'port-label': 'Port serwera WebSocket:',
+          'connect': 'Połącz',
+          'disconnect': 'Rozłącz',
+          
+          // Channel tab
+          'channel-tab': 'Kanał',
+          'channel-info': 'Informacje o kanale',
+          'channel-id': 'ID kanału:',
+          'copy-channel': 'Kopiuj ID kanału',
+          'document-name': 'Nazwa dokumentu:',
+          
+          // Active sessions tab
+          'sessions-tab': 'Aktywne Sesje',
+          'sessions-info': 'Wszystkie aktywne połączenia:',
+          'refresh': 'Odśwież',
+          'no-connections': 'Brak aktywnych połączeń',
+          
+          // LLM Data tab
+          'llm-tab': 'Dane dla LLM',
+          'copy-llm': 'Kopiuj dane dla LLM',
+          
+          // Status messages
+          'connected': 'Connected to Cursor MCP server',
+          'disconnected': 'Nie udało się połączyć z serwerm MCP',
+          'document': 'Dokument:',
+          'loading': 'Ładowanie...',
+          'connecting': 'Łączenie...',
+          'copied': 'Skopiowano!',
+          'current-session': 'Twoja aktualna sesja',
+          'connected-at': 'Połączono o:'
+        },
+        en: {
+          // Header
+          'working-everyday': 'Working Everyday Reliable & Open-minded, Never entitled, Intelligent Creative Assistant',
+          'slogan': 'Working hard, never whining, always designing. Design flow in tempo. No chaos. No fuss.',
+          
+          // Connection tab
+          'connection-tab': 'Connection',
+          'plugin-info': 'The plugin enables communication between Gemini CLI / Claude Code and Figma via WebSocket. This solution allows <strong>working directly in projects</strong> where the default Figma MCP only works in read-only mode for developers.',
+          'version': 'Version: 1.0.0',
+          'how-to-use': 'How to use?',
+          'step1': 'Make sure MCP is installed and running',
+          'step2': 'Connect to the server using the appropriate port (default: 3055)',
+          'step3': 'Once connected, copy the channel ID and paste it into Gemini/CC',
+          'step4': 'Important: 1 project == 1 channel ID. If you want to work with multiple projects simultaneously, you need to run the plugin in each',
+          'port-label': 'WebSocket Server Port:',
+          'connect': 'Connect',
+          'disconnect': 'Disconnect',
+          
+          // Channel tab
+          'channel-tab': 'Channel',
+          'channel-info': 'Channel Information',
+          'channel-id': 'Channel ID:',
+          'copy-channel': 'Copy Channel ID',
+          'document-name': 'Document Name:',
+          
+          // Active sessions tab
+          'sessions-tab': 'Active Sessions',
+          'sessions-info': 'All active connections:',
+          'refresh': 'Refresh',
+          'no-connections': 'No active connections',
+          
+          // LLM Data tab
+          'llm-tab': 'Data for LLM',
+          'copy-llm': 'Copy data for LLM',
+          
+          // Status messages
+          'connected': 'Connected to Cursor MCP server',
+          'disconnected': 'Failed to connect to MCP server',
+          'document': 'Document:',
+          'loading': 'Loading...',
+          'connecting': 'Connecting...',
+          'copied': 'Copied!',
+          'current-session': 'Your current session',
+          'connected-at': 'Connected at:'
+        }
+      };
+
+      // Language switch functionality
+      function switchLanguage(lang) {
+        currentLang = lang;
+        
+        // Update button text
+        document.querySelectorAll('.lang-pl').forEach(el => {
+          el.style.display = lang === 'pl' ? 'inline' : 'none';
+        });
+        document.querySelectorAll('.lang-en').forEach(el => {
+          el.style.display = lang === 'en' ? 'inline' : 'none';
+        });
+        
+        // Update translatable elements
+        updateTranslations();
+      }
+
+      function updateTranslations() {
+        // Update all elements with data-translate attribute
+        document.querySelectorAll('[data-translate]').forEach(el => {
+          const key = el.getAttribute('data-translate');
+          if (translations[currentLang][key]) {
+            if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+              el.placeholder = translations[currentLang][key];
+            } else {
+              el.innerHTML = translations[currentLang][key];
+            }
+          }
+        });
+      }
 
       // Initialize UI
       function updateConnectionStatus(isConnected, message) {
@@ -883,20 +1017,26 @@ join_channel channel:"${state.channel}"
           await navigator.clipboard.writeText(data);
           
           // Change button text temporarily
-          copyLLMButton.textContent = "Skopiowano!";
+          copyLLMButton.textContent = translations[currentLang]['copied'];
           copyLLMButton.classList.add("copied");
           
           setTimeout(() => {
-            copyLLMButton.textContent = "Kopiuj";
+            copyLLMButton.textContent = translations[currentLang]['copy-llm'];
             copyLLMButton.classList.remove("copied");
           }, 2000);
         } catch (err) {
           console.error("Failed to copy text: ", err);
           copyLLMButton.textContent = "Błąd!";
           setTimeout(() => {
-            copyLLMButton.textContent = "Kopiuj";
+            copyLLMButton.textContent = translations[currentLang]['copy-llm'];
           }, 2000);
         }
+      });
+
+      // Language switch event
+      langSwitch.addEventListener("click", () => {
+        const newLang = currentLang === 'pl' ? 'en' : 'pl';
+        switchLanguage(newLang);
       });
 
       // Function to update progress UI
@@ -1015,6 +1155,9 @@ join_channel channel:"${state.channel}"
             break;
         }
       };
+
+      // Initialize translations on page load
+      updateTranslations();
     </script>
   </body>
 </html>

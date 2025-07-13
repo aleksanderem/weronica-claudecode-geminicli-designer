@@ -272,3 +272,7 @@ When working with the Figma MCP:
 ## License
 
 MIT
+
+## Credits
+
+This project is based on the original [Cursor Talk to Figma MCP](https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp) plugin by Sonny Lazuardi.
