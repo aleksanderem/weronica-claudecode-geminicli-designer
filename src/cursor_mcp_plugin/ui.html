@@ -290,8 +290,8 @@
         </div>
 
         <div id="connection-status" class="status disconnected">
-          Nie udało się połączyć z serwerm MCP<br>
-          <small>Dokument: <span id="doc-name-initial">Ładowanie...</span></small>
+          <span data-translate="disconnected">Nie udało się połączyć z serwerm MCP</span><br>
+          <small><span data-translate="document">Dokument:</span> <span id="doc-name-initial" data-translate="loading">Ładowanie...</span></small>
         </div>
 
         <div class="section">
@@ -485,7 +485,12 @@
           'llm-channel-to-use': 'Kanał do użycia w MCP:',
           'llm-instructions': 'Instrukcje dla LLM:',
           'llm-work-with': 'Aby pracować z Figmą przez MCP, użyj następującego ID kanału w swoich komendach:',
-          'llm-connect-to': 'To połączy Cię z dokumentem:'
+          'llm-connect-to': 'To połączy Cię z dokumentem:',
+          
+          // Connection messages
+          'connected-to-server': 'Połączono z serwerem przez port',
+          'channel-id-label': 'ID kanału:',
+          'document-name-label': 'Nazwa dokumentu:'
         },
         en: {
           // Header
@@ -566,7 +571,12 @@
           'llm-channel-to-use': 'Channel to use in MCP:',
           'llm-instructions': 'Instructions for LLM:',
           'llm-work-with': 'To work with Figma through MCP, use the following channel ID in your commands:',
-          'llm-connect-to': 'This will connect you to the document:'
+          'llm-connect-to': 'This will connect you to the document:',
+          
+          // Connection messages
+          'connected-to-server': 'Connected to server on port',
+          'channel-id-label': 'Channel ID:',
+          'document-name-label': 'Document name:'
         }
       };
 
@@ -598,6 +608,12 @@
             }
           }
         });
+        
+        // Update dynamic content
+        updateConnectionsList(state.allConnections);
+        updateLLMData();
+        // Update connection status
+        updateConnectionStatus(state.connected);
       }
 
       // Initialize UI
@@ -605,12 +621,12 @@
         state.connected = isConnected;
         
         // Get current document name to preserve it
-        const currentDocName = document.getElementById('doc-name-initial')?.textContent || 'Ładowanie...';
+        const currentDocName = document.getElementById('doc-name-initial')?.textContent || translations[currentLang]['loading'];
         
         if (!message) {
           message = isConnected
-            ? "Connected to Cursor MCP server"
-            : `Nie udało się połączyć z serwerm MCP<br><small>Dokument: <span id="doc-name-initial">${currentDocName}</span></small>`;
+            ? translations[currentLang]['connected']
+            : `${translations[currentLang]['disconnected']}<br><small>${translations[currentLang]['document']} <span id="doc-name-initial">${currentDocName}</span></small>`;
         }
         
         connectionStatus.innerHTML = message;
@@ -669,7 +685,7 @@
                  
                   updateConnectionStatus(
                     true,
-                    `Połączono z serwerem przez port ${port} ID kanału: <strong>${channelName}</strong> Nazwa dokumentu: <strong id="doc-name">Ładowanie...</strong>`
+                    `${translations[currentLang]['connected-to-server']} ${port} ${translations[currentLang]['channel-id-label']} <strong>${channelName}</strong> ${translations[currentLang]['document-name-label']} <strong id="doc-name">${translations[currentLang]['loading']}</strong>`
                   );
 
                   // Notify the plugin code
@@ -712,8 +728,8 @@
                 }
               } else if (data.type === "error") {
                 console.error("Error:", data.message);
-                const currentDocName = document.getElementById('doc-name-initial')?.textContent || 'Ładowanie...';
-                updateConnectionStatus(false, `Error: ${data.message}<br><small>Dokument: <span id="doc-name-initial">${currentDocName}</span></small>`);
+                const currentDocName = document.getElementById('doc-name-initial')?.textContent || translations[currentLang]['loading'];
+                updateConnectionStatus(false, `Error: ${data.message}<br><small>${translations[currentLang]['document']} <span id="doc-name-initial">${currentDocName}</span></small>`);
                 state.socket.close();
               } else if (data.type === "channels_list") {
                 // Update the connections list
@@ -759,10 +775,10 @@
           };
         } catch (error) {
           console.error("Connection error:", error);
-          const currentDocName = document.getElementById('doc-name-initial')?.textContent || 'Ładowanie...';
+          const currentDocName = document.getElementById('doc-name-initial')?.textContent || translations[currentLang]['loading'];
           updateConnectionStatus(
             false,
-            `Connection error: ${error.message || "Unknown error"}<br><small>Dokument: <span id="doc-name-initial">${currentDocName}</span></small>`
+            `Connection error: ${error.message || "Unknown error"}<br><small>${translations[currentLang]['document']} <span id="doc-name-initial">${currentDocName}</span></small>`
           );
         }
       }
