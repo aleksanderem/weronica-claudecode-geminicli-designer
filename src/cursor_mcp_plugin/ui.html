@@ -651,22 +651,41 @@
           state.socket = new WebSocket(`ws://localhost:${port}`);
 
           state.socket.onopen = () => {
-            // Generate random channel name
-            const channelName = generateChannelName();
-            console.log("Joining channel:", channelName);
-            state.channel = channelName;
+            // Wait a bit for document name to be set
+            setTimeout(() => {
+              // Generate random channel name
+              const channelName = generateChannelName();
+              console.log("Joining channel:", channelName);
+              state.channel = channelName;
 
-            // Get document name before joining
-            const docName = state.documentName || document.getElementById('doc-name-initial')?.textContent || 'Unknown';
-            
-            // Join the channel with document name
-            state.socket.send(
-              JSON.stringify({
-                type: "join",
-                channel: channelName.trim(),
-                documentName: docName
-              })
-            );
+              // Get document name - wait for it if needed
+              let docName = state.documentName;
+              
+              // If no document name yet, try to get it from UI
+              if (!docName || docName === 'Unknown') {
+                const docNameElement = document.getElementById('doc-name-initial');
+                if (docNameElement && docNameElement.textContent !== 'Ładowanie...') {
+                  docName = docNameElement.textContent;
+                }
+              }
+              
+              // Fallback to requesting from plugin
+              if (!docName || docName === 'Unknown') {
+                parent.postMessage({ pluginMessage: { type: "GET_DOCUMENT_NAME" } }, "*");
+                docName = 'Requesting...'; // Temporary until we get response
+              }
+              
+              console.log("Document name for join:", docName, "state.documentName:", state.documentName);
+              
+              // Join the channel with document name
+              state.socket.send(
+                JSON.stringify({
+                  type: "join",
+                  channel: channelName.trim(),
+                  documentName: docName
+                })
+              );
+            }, 1500); // Wait 1.5s for document name to be properly set
           };
 
           state.socket.onmessage = (event) => {
@@ -1086,19 +1105,43 @@ join_channel channel:"${state.channel}"
       
       // Copy LLM data to clipboard
       copyLLMButton.addEventListener("click", async () => {
+        console.log("Copy LLM button clicked!");
         const data = generateLLMData();
+        console.log("Generated LLM data:", data);
         
         try {
-          await navigator.clipboard.writeText(data);
+          // Figma plugins don't have direct clipboard access
+          // We need to use a workaround with textarea
+          const textarea = document.createElement('textarea');
+          textarea.value = data;
+          textarea.style.position = 'fixed';
+          textarea.style.top = '-9999px';
+          document.body.appendChild(textarea);
+          textarea.select();
           
-          // Change button text temporarily
-          copyLLMButton.textContent = translations[currentLang]['copied'];
-          copyLLMButton.classList.add("copied");
-          
-          setTimeout(() => {
-            copyLLMButton.textContent = translations[currentLang]['copy-llm'];
-            copyLLMButton.classList.remove("copied");
-          }, 2000);
+          try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+              // Change button text temporarily
+              copyLLMButton.textContent = translations[currentLang]['copied'];
+              copyLLMButton.classList.add("copied");
+              
+              setTimeout(() => {
+                copyLLMButton.textContent = translations[currentLang]['copy-llm'];
+                copyLLMButton.classList.remove("copied");
+              }, 2000);
+            } else {
+              throw new Error('Copy command failed');
+            }
+          } catch (err) {
+            console.error("Failed to copy with execCommand:", err);
+            copyLLMButton.textContent = "Błąd kopiowania!";
+            setTimeout(() => {
+              copyLLMButton.textContent = translations[currentLang]['copy-llm'];
+            }, 2000);
+          } finally {
+            document.body.removeChild(textarea);
+          }
         } catch (err) {
           console.error("Failed to copy text: ", err);
           copyLLMButton.textContent = "Błąd!";

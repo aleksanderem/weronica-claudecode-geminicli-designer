@@ -9,11 +9,24 @@ const state = {
 // Initialize UI
 figma.showUI(__html__, { width: 560, height: 650 });
 
+// Send document name immediately and after a delay
 const docName = figma.root.name;
+console.log("Document name from Figma:", docName);
+
+// Send immediately
 figma.ui.postMessage({
   type: 'init',
   documentName: docName
 });
+
+// Send again after UI loads
+setTimeout(() => {
+  console.log("Sending document name again:", docName);
+  figma.ui.postMessage({
+    type: 'init',
+    documentName: docName
+  });
+}, 1000);
 
 
 
