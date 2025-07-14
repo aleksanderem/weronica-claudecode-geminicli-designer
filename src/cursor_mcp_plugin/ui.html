@@ -664,10 +664,7 @@
               JSON.stringify({
                 type: "join",
                 channel: channelName.trim(),
-                metadata: {
-                  documentName: docName,
-                  pluginVersion: "1.0.0"
-                }
+                documentName: docName
               })
             );
           };
@@ -712,16 +709,6 @@
                   // Request list of all connections after successful join
                   setTimeout(() => {
                     requestConnectionsList();
-                    
-                    // For now, show at least current connection if server doesn't support list_channels
-                    if (state.allConnections.length === 0) {
-                      const mockConnection = {
-                        channel: state.channel,
-                        documentName: state.documentName || document.getElementById('doc-name-initial')?.textContent || 'Unknown',
-                        connectedAt: new Date().toISOString()
-                      };
-                      updateConnectionsList([mockConnection]);
-                    }
                   }, 500);
                   
 

@@ -3,6 +3,14 @@ import { Server, ServerWebSocket } from "bun";
 // Store clients by channel
 const channels = new Map<string, Set<ServerWebSocket<any>>>();
 
+// Store channel metadata
+interface ChannelMetadata {
+  documentName?: string;
+  connectedAt: string;
+  clientCount: number;
+}
+const channelMetadata = new Map<string, ChannelMetadata>();
+
 function handleConnection(ws: ServerWebSocket<any>) {
   // Don't add to clients immediately - wait for channel join
   console.log("New client connected");
@@ -20,6 +28,18 @@ function handleConnection(ws: ServerWebSocket<any>) {
     channels.forEach((clients, channelName) => {
       if (clients.has(ws)) {
         clients.delete(ws);
+        
+        // Update metadata
+        const metadata = channelMetadata.get(channelName);
+        if (metadata) {
+          metadata.clientCount = clients.size;
+          
+          // Remove channel if empty
+          if (clients.size === 0) {
+            channels.delete(channelName);
+            channelMetadata.delete(channelName);
+          }
+        }
 
         // Notify other clients in same channel
         clients.forEach((client) => {
@@ -90,11 +110,23 @@ const server = Bun.serve({
           // Create channel if it doesn't exist
           if (!channels.has(channelName)) {
             channels.set(channelName, new Set());
+            channelMetadata.set(channelName, {
+              documentName: data.documentName,
+              connectedAt: new Date().toISOString(),
+              clientCount: 0
+            });
           }
 
           // Add client to channel
           const channelClients = channels.get(channelName)!;
           channelClients.add(ws);
+          
+          // Update metadata
+          const metadata = channelMetadata.get(channelName)!;
+          metadata.clientCount = channelClients.size;
+          if (data.documentName) {
+            metadata.documentName = data.documentName;
+          }
 
           // Notify client they joined successfully
           ws.send(JSON.stringify({
@@ -124,6 +156,22 @@ const server = Bun.serve({
               }));
             }
           });
+          return;
+        }
+
+        // Handle list channels request
+        if (data.type === "list_channels") {
+          const channelsList = Array.from(channelMetadata.entries()).map(([channel, metadata]) => ({
+            channel,
+            documentName: metadata.documentName,
+            connectedAt: metadata.connectedAt,
+            clientCount: metadata.clientCount
+          }));
+          
+          ws.send(JSON.stringify({
+            type: "channels_list",
+            channels: channelsList
+          }));
           return;
         }
 
@@ -166,8 +214,22 @@ const server = Bun.serve({
     },
     close(ws: ServerWebSocket<any>) {
       // Remove client from their channel
-      channels.forEach((clients) => {
-        clients.delete(ws);
+      channels.forEach((clients, channelName) => {
+        if (clients.has(ws)) {
+          clients.delete(ws);
+          
+          // Update metadata
+          const metadata = channelMetadata.get(channelName);
+          if (metadata) {
+            metadata.clientCount = clients.size;
+            
+            // Remove channel if empty
+            if (clients.size === 0) {
+              channels.delete(channelName);
+              channelMetadata.delete(channelName);
+            }
+          }
+        }
       });
     }
   }
